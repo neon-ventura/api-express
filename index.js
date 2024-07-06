@@ -21,33 +21,41 @@ app.get('/api/precos', (req, res) => {
 app.post('/api/precos', express.json(), (req, res) => {
   const { produto, preco } = req.body;
 
-  // Aqui você pode adicionar lógica para salvar o novo produto no seu arquivo JSON ou banco de dados
-  // Por exemplo, você pode ler o arquivo JSON, adicionar o novo produto ao array e depois salvar novamente o arquivo
+  if (!produto || !preco) {
+    return res.status(400).json({ error: 'Dados incompletos. Certifique-se de enviar produto e preço.' });
+  }
 
   const dataPath = path.join(__dirname, 'db.json');
   fs.readFile(dataPath, 'utf8', (err, data) => {
     if (err) {
-      return res.status(500).json({ error: 'Erro ao ler o arquivo' });
+      console.error('Erro ao ler o arquivo:', err);
+      return res.status(500).json({ error: 'Erro ao ler o arquivo de dados.' });
     }
 
-    const products = JSON.parse(data);
-    const newProduct = {
-      id: products.length + 1, // Exemplo simples de atribuir um ID
-      produto: produto,
-      preco: preco
-    };
+    try {
+      const products = JSON.parse(data);
+      const newProduct = {
+        id: products.length + 1,
+        produto: produto,
+        preco: preco
+      };
 
-    products.push(newProduct); // Adiciona o novo produto ao array
+      products.push(newProduct);
 
-    // Salva os produtos atualizados de volta no arquivo JSON
-    fs.writeFile(dataPath, JSON.stringify(products), (err) => {
-      if (err) {
-        return res.status(500).json({ error: 'Erro ao salvar o produto' });
-      }
-      res.status(201).json(newProduct); // Retorna o novo produto criado com status 201 (Created)
-    });
+      fs.writeFile(dataPath, JSON.stringify(products), (err) => {
+        if (err) {
+          console.error('Erro ao salvar o produto:', err);
+          return res.status(500).json({ error: 'Erro ao salvar o produto.' });
+        }
+        res.status(201).json(newProduct); // Retorna o novo produto com status 201 (Created)
+      });
+    } catch (error) {
+      console.error('Erro ao processar dados JSON:', error);
+      res.status(500).json({ error: 'Erro interno ao processar dados JSON.' });
+    }
   });
 });
+
 
 
 app.listen(port, () => {
