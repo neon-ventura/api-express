@@ -11,7 +11,7 @@ app.use(cors())
 
 
 app.get('/api/precos', (req, res) => {
-  res.json(JSON.parse(produtos));
+  return res.json(produtos);
 });
 
 
