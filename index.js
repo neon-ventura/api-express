@@ -2,7 +2,10 @@ const express = require('express')
 const app = express()
 const path = require('path')
 const fs = require('fs')
+const cors = require('cors')
 const port = process.env.PORT || 3000
+
+app.use(cors())
 
 app.get('/api/precos', (req, res) => {
     const dataPath = path.join(__dirname, 'db.json');
