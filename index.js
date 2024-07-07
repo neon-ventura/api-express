@@ -1,13 +1,12 @@
 const express = require('express')
 const app = express()
-const path = require('path')
-const fs = require('fs')
 const cors = require('cors')
 const produtos = require('./db.json')
 const port = process.env.PORT || 3000
 
 
 app.use(cors())
+app.use(express.json())
 
 
 app.get('/api/precos', (req, res) => {
@@ -23,7 +22,7 @@ app.post('/api/precos', (req, res) => {
   };
   produtos.push(novoProduto);
 
-  res.status(201).json(novoProduto);
+  res.json(novoProduto);
 });
 
 
