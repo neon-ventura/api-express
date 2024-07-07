@@ -15,8 +15,7 @@ app.get('/api/precos', (req, res) => {
 
 app.get('/api/precos/:id', (req, res) => {
   const id = req.params.id
-  const produto = produtos.find((p) => p.id === id)
-  res.json(produto)
+  res.json(produtos[id])
 })
 
 app.post('/api/precos', (req, res) => {
