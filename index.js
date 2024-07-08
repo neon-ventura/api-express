@@ -31,8 +31,8 @@ app.post('/api/precos', (req, res) => {
 });
 
 app.delete('/api/precos/:id', (req, res) => {
-  const { id } = req.params
-  const produtoIndex = produtos.findIndex(produtos => produtos.id == id)
+  const id = parseInt(req.params.id, 10)
+  const produtoIndex = produtos.findIndex(produtos => produtos.id === id)
   if (produtoIndex > -1) {
     produtos.splice(produtoIndex, 1)
   }
