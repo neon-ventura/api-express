@@ -30,6 +30,13 @@ app.post('/api/precos', (req, res) => {
   res.json(novoProduto);
 });
 
+app.delete('/api/precos/:id', (req, res) => {
+  const { id } = req.params
+  const produtoIndex = produtos.findIndex(produtos => produtos.id === id)
+  produtos.splice(produtoIndex, 1)
+  console.log('Produto deletado')
+})
+
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`)
