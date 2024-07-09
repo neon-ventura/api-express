@@ -14,9 +14,9 @@ app.get('/api/precos', (req, res) => {
 });
 
 app.get('/api/precos/:id', (req, res) => {
-  const id = req.params.id
-  const idProdutos = produtos[id] + 1
-  res.json(idProdutos)
+  const id = parseInt(req.params.id, 10)
+  const produto = produtos.find(p => p.id === id)
+  res.json(produto)
 })
 
 app.post('/api/precos', (req, res) => {
